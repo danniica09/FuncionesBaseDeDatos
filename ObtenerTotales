@@ -1,0 +1,21 @@
+DELIMITER //
+
+CREATE FUNCTION ObtenerTotales()
+RETURNS TABLE
+AS
+BEGIN
+    DECLARE total_existencias INT;
+    DECLARE total_vendidas INT;
+    
+    SELECT
+        SUM(p.existencias) AS total_existencias,
+        SUM(v.cantidad) AS total_vendidas
+    INTO total_existencias, total_vendidas
+    FROM productos p
+    LEFT JOIN ventas_detalle v ON p.id = v.producto_id;
+
+    RETURN SELECT total_existencias, total_vendidas;
+END //
+
+DELIMITER ;
+SELECT * FROM ObtenerTotales();
